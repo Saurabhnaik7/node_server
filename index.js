@@ -102,18 +102,18 @@ app.post('/webhook', async(req, res) => {
   const data=new msg({
 
     object:req.body.object,
-    id:req.body.entry.id,
-    messaging_product:req.body.entry.changes.value.messaging_product,
-    display_phone_number:req.body.entry.changes.value.metadata.display_phone_number,
-    phone_number_id:req.body.entry.changes.value.metadata.phone_number_id,
-    name:req.body.entry.changes.value.contacts.profile.name,
-    wa_id:req.body.entry.changes.value.contacts.wa_id,
-    from:req.body.entry.changes.value.messages.from,
-    id:req.body.entry.changes.value.messages.id,
-    timestamp:req.body.entry.changes.value.messages.timestamp,
-    body:req.body.entry.changes.value.messages.text.body,
-    type:req.body.entry.changes.value.messages.type,
-    field:req.body.entry.changes.field
+    id:req.body.entry[0].id,
+    messaging_product:req.body.entry[0].changes[0].value.messaging_product,
+    display_phone_number:req.body.entry[0].changes[0].value.metadata.display_phone_number,
+    phone_number_id:req.body.entry[0].changes[0].value.metadata.phone_number_id,
+    name:req.body.entry[0].changes[0].value.contacts[0].profile.name,
+    wa_id:req.body.entry[0].changes[0].value.contacts[0].wa_id,
+    from:req.body.entry[0].changes[0].value.messages[0].from,
+    id:req.body.entry[0].changes[0].value.messages[0].id,
+    timestamp:req.body.entry[0].changes[0].value.messages[0].timestamp,
+    body:req.body.entry[0].changes[0].value.messages[0].text.body,
+    type:req.body.entry[0].changes[0].value.messages[0].type,
+    field:req.body.entry[0].changes[0].field
 
   })
   await data.save();
