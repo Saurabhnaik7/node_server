@@ -17,9 +17,47 @@ mongoose.connect("mongodb+srv://Naik12345:Naik12345@wainbox.n9rrz2q.mongodb.net/
   }
 })
 
+//message schema
 const sch={
-  object:String
+    object:String,
+    entry:[
+      {
+        id: String,
+        changes:[
+          {
+            value: {
+              messaging_product: String,
+              metadata: {
+                display_phone_number: String,
+                phone_number_id: String
+              },
+              contacts: [
+                {
+                  profile: {
+                    name: String
+                  },
+                  wa_id: String
+                }
+              ],
+              messages: [
+                {
+                  from: String,
+                  id: String,
+                  timestamp: String,
+                  text: {
+                    body: String
+                  },
+                  type: String
+                }
+              ]
+            },
+            field: String
+          }
+        ]
+      }
+    ]
 }
+
 
 const msg=mongoose.model("messages",sch);
 
@@ -59,8 +97,24 @@ app.post('/webhook', async(req, res) => {
   }
 
   console.log('request header X-Hub-Signature validated');
+
+  //store message into the database
   const data=new msg({
-    object:req.body.object
+
+    object:req.body.object,
+    id:req.body.entry.id,
+    messaging_product:req.body.entry.changes.value.messaging_product,
+    display_phone_number:req.body.entry.changes.value.metadata.display_phone_number,
+    phone_number_id:req.body.entry.changes.value.metadata.phone_number_id,
+    name:req.body.entry.changes.value.contacts.profile.name,
+    wa_id:req.body.entry.changes.value.contacts.wa_id,
+    from:req.body.entry.changes.value.messages.from,
+    id:req.body.entry.changes.value.messages.id,
+    timestamp:req.body.entry.changes.value.messages.timestamp,
+    body:req.body.entry.changes.value.messages.text.body,
+    type:req.body.entry.changes.value.messages.type,
+    field:req.body.entry.changes.field
+
   })
   await data.save();
 
