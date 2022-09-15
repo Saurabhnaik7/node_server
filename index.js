@@ -2,11 +2,32 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 var xhub = require('express-x-hub');
+const mongoose=require('mongoose');
 //var connectDB=require('./config/db');
 //const message = require('./models/Message');
 
 //connect database
 //connectDB();
+
+app.use(express.json());
+mongoose.connect("mongodb+srv://Naik12345:Naik12345@wainbox.n9rrz2q.mongodb.net/?retryWrites=true&w=majority",{
+  useNewUrlParser:true,
+  useUnifiedTopology:true
+},(err)=>{
+  if(!err)
+  {
+    console.log("connected to db")
+  }else{
+    console.log("error")
+  }
+})
+
+const sch={
+  object:String
+}
+
+const msg=mongoose.model("messages",sch);
+
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
@@ -43,20 +64,11 @@ app.post('/webhook', async(req, res) => {
   }
 
   console.log('request header X-Hub-Signature validated');
-  /*destructure request body
-  const {object} = req.body;
-  try {
+  const data=new msg({
+    object:req.body.object
+  })
+  await data.save();
 
-    //Store to the database
-    data=new message({
-      object
-    })
-    await data.save();
-  
-} catch (err) {
-  console.error(err.message);
-  res.status(500).send('Server Error');
-}*/
   // Process the webhook updates here
   received_updates.unshift(req.body);
   res.sendStatus(200);
