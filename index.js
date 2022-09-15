@@ -8,7 +8,11 @@ const message = require('./models/Message');
 //connect database
 connectDB();
 
+//specifying port
 const PORT =process.env.PORT || 5000;
+
+//init middleware
+app.use(express.json({extended:false}));
 //app.set('port', (process.env.PORT || 5000));
 //app.listen(app.get('port'));
 
@@ -45,16 +49,27 @@ app.post('/webhook', async(req, res) => {
   }
 
   console.log('request header X-Hub-Signature validated');
-  //Store to the database
-  const message=new Message({
-    object:req.body.object
-  });
+  
+  //destructure request body
+  const {object} = req.body;
+  try {
 
-  const val=await message.save();
-  res.json(val);
-  // Process the Webhook updates here
-  received_updates.unshift(req.body);
-  res.sendStatus(200);
+    //Store to the database
+    data=new Message({
+      object
+    })
+    await data.save();
+
+    //const val=await message.save();
+    //res.json(val);
+    // Process the Webhook updates here
+    //received_updates.unshift(req.body);
+    res.sendStatus(200);
+    
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 
