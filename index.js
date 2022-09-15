@@ -1,8 +1,12 @@
-var bodyParser = require('body-parser');
-var express = require('express');
-var app = express();
-var xhub = require('express-x-hub');
+const bodyParser = require('body-parser');
+const express=require('express');
+const connectDB=require('./config/db');
+const app = express();
+const xhub = require('express-x-hub');
 const message = require('./models/Message');
+
+//connect database
+connectDB();
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
