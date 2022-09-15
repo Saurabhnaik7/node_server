@@ -2,11 +2,11 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 var xhub = require('express-x-hub');
-var connectDB=require('./config/db');
-const message = require('./models/Message');
+//var connectDB=require('./config/db');
+//const message = require('./models/Message');
 
 //connect database
-connectDB();
+//connectDB();
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
@@ -43,7 +43,7 @@ app.post('/webhook', async(req, res) => {
   }
 
   console.log('request header X-Hub-Signature validated');
-  //destructure request body
+  /*destructure request body
   const {object} = req.body;
   try {
 
@@ -52,13 +52,15 @@ app.post('/webhook', async(req, res) => {
       object
     })
     await data.save();
-  // Process the webhook updates here
-  received_updates.unshift(req.body);
-  res.sendStatus(200);
+  
 } catch (err) {
   console.error(err.message);
   res.status(500).send('Server Error');
-}
+}*/
+  // Process the webhook updates here
+  received_updates.unshift(req.body);
+  res.sendStatus(200);
+
 });
 
 app.listen();
