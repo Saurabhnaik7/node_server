@@ -8,19 +8,21 @@ const message = require('./models/Message');
 //connect database
 connectDB();
 
-app.set('port', (process.env.PORT || 5000));
-app.listen(app.get('port'));
+const PORT =process.env.PORT || 5000;
+//app.set('port', (process.env.PORT || 5000));
+//app.listen(app.get('port'));
 
 app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
 app.use(bodyParser.json());
 
-var token = process.env.TOKEN || 'token';
-var received_updates = [];
+const token = process.env.TOKEN || 'token';
+const received_updates = [];
 
-app.get('/', function(req, res) {
+//app.get('/', function(req, res) {
   //console.log(req);
-  res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '</pre>');
-});
+  //res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '</pre>');
+//});
+app.get('/', (req,res) => res.send('API Running'));
 
 app.get('/webhook', function(req, res) {
   if (
@@ -55,4 +57,6 @@ app.post('/webhook', async(req, res) => {
   res.sendStatus(200);
 });
 
-app.listen();
+
+app.listen(PORT,() => console.log(`Server starte at ${PORT}`));
+//app.listen();
