@@ -88,7 +88,7 @@ app.get('/webhook', function(req, res) {
 });
 
 app.post('/webhook', async(req, res) => {
-  console.log('webhook request body:', JSON.stringify(req.body, null, 2));
+  console.log('webhook request body:', req.body);
 
   if (!req.isXHubValid()) {
     console.log('Warning - request header X-Hub-Signature not present or invalid');
