@@ -31,7 +31,7 @@ const sch={
                 display_phone_number: String,
                 phone_number_id: String
               },
-              contacts: [
+              contacts:[
                 {
                   profile: {
                     name: String
@@ -42,7 +42,7 @@ const sch={
               messages: [
                 {
                   from: String,
-                  id: String,
+                  //id: String,
                   timestamp: String,
                   text: {
                     body: String
@@ -88,7 +88,7 @@ app.get('/webhook', function(req, res) {
 });
 
 app.post('/webhook', async(req, res) => {
-  console.log('webhook request body:', req.body);
+  console.log('webhook request body:', JSON.stringify(req.body, null, 2));
 
   if (!req.isXHubValid()) {
     console.log('Warning - request header X-Hub-Signature not present or invalid');
@@ -101,19 +101,19 @@ app.post('/webhook', async(req, res) => {
   //store message into the database
   const data=new msg({
 
-    object:req.body.object,
-    id:req.body.entry[0].id,
-    messaging_product:req.body.entry[0].changes[0].value.messaging_product,
-    display_phone_number:req.body.entry[0].changes[0].value.metadata.display_phone_number,
-    phone_number_id:req.body.entry[0].changes[0].value.metadata.phone_number_id,
-    name:req.body.entry[0].changes[0].value.contacts[0].profile.name,
-    wa_id:req.body.entry[0].changes[0].value.contacts[0].wa_id,
-    from:req.body.entry[0].changes[0].value.messages[0].from,
-    id:req.body.entry[0].changes[0].value.messages[0].id,
-    timestamp:req.body.entry[0].changes[0].value.messages[0].timestamp,
-    body:req.body.entry[0].changes[0].value.messages[0].text.body,
-    type:req.body.entry[0].changes[0].value.messages[0].type,
-    field:req.body.entry[0].changes[0].field
+    object : req.body.object,
+    id : req.body.entry[0].id,
+    messaging_product : req.body.entry[0].changes[0].value.messaging_product,
+    display_phone_number : req.body.entry[0].changes[0].value.metadata.display_phone_number,
+    phone_number_id : req.body.entry[0].changes[0].value.metadata.phone_number_id,
+    name : req.body.entry[0].changes[0].value.contacts[0].profile.name,
+    wa_id : req.body.entry[0].changes[0].value.contacts[0].wa_id,
+    from : req.body.entry[0].changes[0].value.messages[0].from,
+    //id : req.body.entry[0].changes[0].value.messages[0].id,
+    timestamp : req.body.entry[0].changes[0].value.messages[0].timestamp,
+    body : req.body.entry[0].changes[0].value.messages[0].text.body,
+    type : req.body.entry[0].changes[0].value.messages[0].type,
+    field : req.body.entry[0].changes[0].field
 
   })
   await data.save();
