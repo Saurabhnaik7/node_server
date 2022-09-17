@@ -74,10 +74,7 @@ const sch={
     ]
 }
 */
-
-
 const msg=mongoose.model("messages",sch);
-
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
@@ -114,9 +111,9 @@ app.post('/webhook', async(req, res) => {
   }
 
   console.log('request header X-Hub-Signature validated');
-
-  //store message into the database
-  const data=new msg({
+  if(req.body.entry){
+    //store message into the database
+    const data=new msg({
 
     object : req.body.object,
     id : req.body.entry[0].id,
@@ -132,8 +129,12 @@ app.post('/webhook', async(req, res) => {
     type : req.body.entry[0].changes[0].value.messages[0].type,
     field : req.body.entry[0].changes[0].field
 
-  })
-  await data.save();
+    })
+    await data.save();
+  }
+  else{
+    console.log("This webhook has subscribed to only messages")
+  }
 
   // Process the webhook updates here
   received_updates.unshift(req.body);
