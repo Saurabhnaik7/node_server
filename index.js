@@ -20,6 +20,22 @@ mongoose.connect("mongodb+srv://Naik12345:Naik12345@wainbox.n9rrz2q.mongodb.net/
 //message schema
 const sch={
     object:String,
+    id: String,
+    messaging_product: String,
+    display_phone_number: String,
+    phone_number_id: String,
+    name: String,
+    wa_id: String,
+    from: String,
+    timestamp: String,
+    body: String,
+    type: String,
+    field: String
+}
+
+/*
+const sch={
+    object:String,
     entry:[
       {
         id: String,
@@ -57,6 +73,7 @@ const sch={
       }
     ]
 }
+*/
 
 
 const msg=mongoose.model("messages",sch);
