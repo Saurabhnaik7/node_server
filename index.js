@@ -18,7 +18,60 @@ mongoose.connect("mongodb+srv://Naik12345:Naik12345@wainbox.n9rrz2q.mongodb.net/
 })
 
 //message schema
-const sch={
+const MsgSchema = new mongoose.Schema({
+  object:{
+      type: String,
+      required: true
+  },
+  id: {
+      type: String,
+      required: true
+  },
+  messaging_product: {
+      type: String,
+      required: true
+  },
+  display_phone_number: {
+      type: String,
+      required: true
+  },
+  phone_number_id: {
+      type: String,
+      required: true
+  },
+  name: {
+      type: String,
+      required: true
+  },
+  wa_id: {
+      type: String,
+      required: true
+  },
+  from: {
+      type: String,
+      required: true
+  },
+  timestamp: {
+      type: String,
+      required: true
+  },
+  body: {
+      type: String,
+      required: true
+  },
+  type: {
+      type: String,
+      required: true
+  },
+  field: {
+      type: String,
+      required: true
+  }
+});
+
+const Messages= mongoose.model('messages', MsgSchema);
+
+/*const sch={
     object:String,
     id: String,
     messaging_product: String,
@@ -32,49 +85,7 @@ const sch={
     type: String,
     field: String
 }
-
-/*
-const sch={
-    object:String,
-    entry:[
-      {
-        id: String,
-        changes:[
-          {
-            value: {
-              messaging_product: String,
-              metadata: {
-                display_phone_number: String,
-                phone_number_id: String
-              },
-              contacts:[
-                {
-                  profile: {
-                    name: String
-                  },
-                  wa_id: String
-                }
-              ],
-              messages: [
-                {
-                  from: String,
-                  //id: String,
-                  timestamp: String,
-                  text: {
-                    body: String
-                  },
-                  type: String
-                }
-              ]
-            },
-            field: String
-          }
-        ]
-      }
-    ]
-}
-*/
-const msg=mongoose.model("messages",sch);
+const msg=mongoose.model("messages",sch);*/
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
@@ -113,7 +124,7 @@ app.post('/webhook', async(req, res) => {
   console.log('request header X-Hub-Signature validated');
   if(req.body.entry){
     //store message into the database
-    const data=new msg({
+    const data=new Messages({
 
     object : req.body.object,
     id : req.body.entry[0].id,
